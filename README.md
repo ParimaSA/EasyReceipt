@@ -1,7 +1,5 @@
 # EasyReceipt
 
-# Easy Receipt
-
 Easy Receipt is a web application that helps users manage **personal and shared income/expense records**.
 Users can track their own receipts or create groups to share financial records with others.
 The system also supports **QR code scanning** to quickly add receipt information.
@@ -24,13 +22,13 @@ The system also supports **QR code scanning** to quickly add receipt information
 The project follows a **layered architecture** to separate responsibilities between different parts of the system.
 
 Frontend (Vue)
-⬇
+-->
 REST API (Node.js + Express)
-⬇
+-->
 Controller Layer
-⬇
+-->
 Service / Repository Layer
-⬇
+-->
 MySQL Database
 
 
