@@ -25,7 +25,7 @@
     </p>
 
     <!-- Actions (if not readOnly) -->
-    <div v-if="readOnly" class="flex items-center gap-1 text-gray-500">
+    <div v-if="!readOnly" class="flex items-center gap-1 text-gray-500">
       <button @click="$emit('edit', record)" class="p-1.5 rounded-lg hover:bg-blue-100">
         <PencilSquareIcon class="w-3.5 h-3.5" />
       </button>
