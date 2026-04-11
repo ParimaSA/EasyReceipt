@@ -5,7 +5,7 @@
     </div>
     <div class="min-w-0">
       <p class="text-xs font-semibold uppercase tracking-wider">{{ label }}</p>
-      <p class="text-2xl font-mono font-semibold mt-0.5">
+      <p class="text-md sm:text-xl md:text-2xl font-mono font-semibold mt-0.5">
         {{ formattedValue }}
       </p>
     </div>
