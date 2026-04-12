@@ -33,6 +33,11 @@
     color: #9ca3af !important;
     opacity: 1 !important;
   }
+
+  textarea::placeholder {
+    color: #9ca3af !important;
+    opacity: 1 !important;
+  }
 }
 
 @layer components {
@@ -47,21 +52,21 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium
            transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2
-           bg-slate-800 text-white hover:bg-slate-900 focus:ring-slate-700;
+           bg-slate-800 text-white hover:bg-slate-900 focus:ring-slate-700 cursor-pointer;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium
            transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2
-           bg-transparent text-slate-700 hover:bg-slate-50 focus:ring-slate-300;
+           bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-300 cursor-pointer;
   }
 
   .btn-danger {
-    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm
+    @apply inline-flex items-center justify-center px-4 py-2.5 rounded-xl font-medium
            transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2
-           bg-rose-500 text-white hover:bg-rose-600 focus:ring-rose-400;
+           bg-rose-500 text-white hover:bg-rose-600 focus:ring-rose-400 cursor-pointer;
   }
 
   .input {
@@ -91,17 +96,17 @@
 
   .badge-leader {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold
-           bg-amber-100 text-amber-600;
+           bg-green-100 text-green-800;
   }
 
   .badge-member {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold
-           bg-slate-100 text-slate-600;
+           bg-blue-100 text-slate-600;
   }
 
   .badge-viewer {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold
-           bg-slate-100 text-slate-500;
+           bg-gray-200 text-slate-500;
   }
 
   .page-enter-active,

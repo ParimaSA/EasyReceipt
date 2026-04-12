@@ -138,6 +138,7 @@ export const useRecordsStore = defineStore('records', () => {
 
   async function fetchGroup(groupId: string, params?: {
     skip?: number; limit?: number; type?: RecordType
+    category_id?: string; member_id?: string
     date_from?: string; date_to?: string
   }) {
     loading.value = true

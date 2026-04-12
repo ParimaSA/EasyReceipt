@@ -1,4 +1,3 @@
-export type UserRole = 'personal' | 'leader' | 'viewer'
 export type GroupMemberRole = 'leader' | 'member' | 'viewer'
 export type RecordType = 'income' | 'expense'
 
@@ -6,7 +5,6 @@ export interface User {
   id: string
   email: string
   username: string
-  role: UserRole
   is_active: boolean
   created_at: string
 }
