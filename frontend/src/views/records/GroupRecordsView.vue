@@ -1,13 +1,15 @@
 <template>
   <div class="p-12 space-y-5 max-w-6xl mx-auto">
+    <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-3xl font-bold">{{ group?.name }}</h1>
         <p v-if="group?.description" class="text-sm text-gray-400 mt-0.5">{{ group.description }}</p>
       </div>
-      <button v-if="canRecord" @click="showForm = true" class="btn-primary">
-        <PlusIcon class="w-4 h-4" /> Add Record
-      </button>
+      <div class="flex gap-2">
+        <RouterLink :to="{ name: 'GroupDashboard', params: { id } }" class="btn-ghost text-sm">Dashboard</RouterLink>
+        <RouterLink :to="{ name: 'GroupDetail', params: { id } }" class="btn-ghost text-sm">Members</RouterLink>
+      </div>
     </div>
 
     <!-- Viewer notice -->
@@ -17,38 +19,35 @@
     </div>
 
     <!-- Filters -->
-    <div class="card p-4 flex flex-wrap gap-3 items-center">
-      <!-- Member -->
+    <div class="card p-4 flex flex-wrap gap-2 items-center">
       <select v-model="filter.member_id" @change="load" class="input w-auto text-sm py-2">
         <option value="">All Members</option>
         <option v-for="m in group?.members" :key="m.user_id" :value="m.user_id">
           {{ m.user?.username }}
         </option>
       </select>
-
-      <!-- Category -->
       <select v-model="filter.category_id" @change="load" class="input w-auto text-sm py-2">
         <option value="">All Categories</option>
         <option v-for="c in mockCategories" :key="c.id" :value="c.id">
           {{ c.icon }} {{ c.name }}
         </option>
       </select>
-
-      <!-- Type -->
       <select v-model="filter.type" @change="load" class="input w-auto text-sm py-2">
         <option value="">All Types</option>
         <option value="income">Income</option>
         <option value="expense">Expense</option>
       </select>
-
-      <!-- Date -->
       <div class="flex items-center gap-2">
         <input v-model="filter.date_from" type="date" @change="load" class="input w-auto text-sm py-2" />
         <span class="text-gray-400 font-medium select-none">—</span>
         <input v-model="filter.date_to" type="date" @change="load" class="input w-auto text-sm py-2" />
       </div>
-
       <button @click="clearFilters" class="btn-ghost text-sm py-2">Clear</button>
+
+      <!-- Add button -->
+      <button v-if="canRecord" @click="showForm = true" class="btn-primary text-sm ml-auto">
+        <PlusIcon class="w-4 h-4" /> Add Record
+      </button>
     </div>
 
     <!-- Records list -->
