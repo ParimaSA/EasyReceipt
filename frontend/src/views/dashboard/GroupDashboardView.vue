@@ -1,7 +1,10 @@
 <template>
   <div class="p-12 space-y-6 max-w-6xl mx-auto">
     <div class="flex items-center justify-between">
-      <h1 class="text-3xl font-bold">{{ group?.name }}</h1>
+      <div>
+        <h1 class="text-3xl font-bold">{{ group?.name }}</h1>
+        <p v-if="group?.description" class="text-sm text-gray-400 mt-0.5">{{ group.description }}</p>
+      </div>
       <div class="flex gap-2">
         <RouterLink :to="{ name: 'GroupDetail', params: { id } }" class="btn-ghost text-sm">Members</RouterLink>
         <RouterLink :to="{ name: 'GroupRecords', params: { id } }" class="btn-ghost text-sm">Records</RouterLink>
@@ -22,8 +25,8 @@
 
     <div v-if="dashboard?.recent_records.length" class="card p-5">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="font-display text-base font-semibold text-ink-800">Recent Records</h3>
-        <RouterLink :to="{ name: 'GroupRecords', params: { id } }" class="text-xs text-ink-400 hover:text-ink-600 font-medium">View all →</RouterLink>
+        <h3 class="font-semibold">Recent Records</h3>
+        <RouterLink :to="{ name: 'GroupRecords', params: { id } }" class="text-xs hover:text-gray-600 font-medium">View all →</RouterLink>
       </div>
       <RecordRow v-for="r in dashboard.recent_records" :key="r.id" :record="r" :read-only="true" />
     </div>
