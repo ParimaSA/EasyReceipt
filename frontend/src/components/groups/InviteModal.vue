@@ -12,11 +12,15 @@
         </div>
         <div>
           <label class="label">Max Uses (optional)</label>
-          <input v-model.number="form.max_uses" type="number" min="1" class="input" placeholder="Unlimited" />
+          <input v-model.number="form.max_uses" type="number" min="1" class="input" placeholder="Unlimited" 
+            @input="form.max_uses = form.max_uses && form.max_uses < 1 ? 1 : form.max_uses"
+          />
         </div>
         <div>
           <label class="label">Expires In (hours, optional)</label>
-          <input v-model.number="form.expires_hours" type="number" min="1" class="input" placeholder="Never" />
+          <input v-model.number="form.expires_hours" type="number" min="1" class="input" placeholder="Never" 
+            @input="form.expires_hours = form.expires_hours && form.expires_hours < 1 ? 1 : form.expires_hours"
+          />
         </div>
         <div class="flex gap-3">
           <button @click="$emit('close')" class="btn-ghost flex-1">Cancel</button>

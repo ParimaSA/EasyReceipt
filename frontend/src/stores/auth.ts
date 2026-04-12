@@ -8,8 +8,17 @@ export const useAuthStore = defineStore('auth', () => {
   const loading = ref(false)
 
   const isAuthenticated = computed(() => !!user.value)
-  const isLeader = computed(() => user.value?.role === 'leader')
-  const isViewer = computed(() => user.value?.role === 'viewer')
+
+  mockMe()
+
+  function mockMe() {
+    user.value = {
+      id: "user-1",
+      email: "john@gmail.com",
+      username: "JohnDoe",
+      is_active: true,
+    } as User
+  }
 
   async function fetchMe() {
     try {
@@ -52,5 +61,5 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
   }
 
-  return { user, loading, isAuthenticated, isLeader, isViewer, fetchMe, login, register, logout }
+  return { user, loading, isAuthenticated, fetchMe, login, register, logout }
 })

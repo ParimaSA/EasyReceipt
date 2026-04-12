@@ -26,7 +26,7 @@
         </button>
       </div>
     </div>
-    <p v-else class="text-sm text-gray-300">No invite links yet.</p>
+    <p v-else class="text-sm text-gray-500">No invite links yet.</p>
   </div>
 </template>
 
