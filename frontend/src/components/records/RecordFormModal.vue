@@ -69,7 +69,13 @@
 
           <div v-if="groups.length && !editRecord">
             <label class="label">Post to Group (optional)</label>
-            <select v-model="form.group_id" class="input">
+            
+            <!-- locked if add record from the group page -->
+            <div v-if="lockedGroupId" class="input bg-gray-50 text-ink-500 cursor-not-allowed">
+              {{ groups.find(g => g.id === lockedGroupId)?.name ?? lockedGroupId }}
+            </div>
+
+            <select v-else v-model="form.group_id" class="input">
               <option value="">— Personal —</option>
               <option v-for="g in recordableGroups" :key="g.id" :value="g.id">{{ g.name }}</option>
             </select>
@@ -101,9 +107,9 @@ import { format } from 'date-fns'
 import { categoriesApi, recordsApi } from '@/api'
 import { useGroupsStore } from '@/stores/groups'
 import { useAuthStore } from '@/stores/auth'
-import type { Record, Category, Group, RecordType } from '@/types'
+import type { Record, Category, RecordType } from '@/types'
 
-const props = defineProps<{ editRecord?: Record }>()
+const props = defineProps<{ editRecord?: Record, lockedGroupId?: string }>()
 const emit = defineEmits<{ close: []; saved: [record: Record] }>()
 
 const authStore = useAuthStore()
@@ -119,7 +125,7 @@ const form = ref({
   type: 'expense' as RecordType,
   date: format(new Date(), 'yyyy-MM-dd'),
   category_id: '',
-  group_id: '',
+  group_id: props.lockedGroupId ?? '',
   note: '',
 })
 
