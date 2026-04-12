@@ -89,6 +89,12 @@
           <Bars3Icon class="w-5 h-5" />
         </button>
         <div class="flex-1" />
+        <span
+          v-if="isGroupPage && groupRole"
+          class="text-xs font-semibold uppercase tracking-wider bg-yellow-100/70 px-3 py-1 rounded-full"
+        >
+          {{ groupRole }}
+        </span>
       </header>
 
       <!-- Page content -->
@@ -102,8 +108,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { RouterView } from 'vue-router'
+import { ref, onMounted,computed } from 'vue'
+import { RouterView, useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import {
   HomeIcon, DocumentTextIcon, UserGroupIcon, FolderIcon,
   Bars3Icon, ArrowRightOnRectangleIcon,
@@ -115,6 +122,15 @@ import NavItem from '@/components/common/NavItem.vue'
 const authStore = useAuthStore()
 const groupsStore = useGroupsStore()
 const sidebarOpen = ref(true)
+const { currentGroup } = storeToRefs(groupsStore)
+
+const route = useRoute()
+const isGroupPage = computed(() => !!route.params.id)
+
+const groupRole = computed(() => {
+  if (!currentGroup.value) return null
+  return currentGroup.value.members.find(m => m.user_id === authStore.user?.id)?.role ?? null
+})
 
 onMounted(() => {
   groupsStore.mockGroups()

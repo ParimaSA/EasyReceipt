@@ -15,17 +15,17 @@ export const useGroupsStore = defineStore('groups', () => {
         id: 'g-1',
         name: 'Family',
         description: 'Family shared expenses',
-        leader_id: 'user-2',
+        leader_id: 'user-1',
         is_active: true,
         created_at: '2024-01-01T00:00:00',
         members: [
           {
-            id: 'gm-1', user_id: 'user-1', group_id: 'g-1', role: 'viewer',
+            id: 'gm-1', user_id: 'user-1', group_id: 'g-1', role: 'leader',
             joined_at: '2024-01-01T00:00:00',
             user: { id: 'user-1', username: 'prima' },
           },
           {
-            id: 'gm-2', user_id: 'user-2', group_id: 'g-1', role: 'leader',
+            id: 'gm-2', user_id: 'user-2', group_id: 'g-1', role: 'member',
             joined_at: '2024-01-02T00:00:00',
             user: { id: 'user-2', username: 'mom' },
           },
@@ -71,7 +71,7 @@ export const useGroupsStore = defineStore('groups', () => {
             user: { id: 'user-2', username: 'mom' },
           },
           {
-            id: 'gm-7', user_id: 'user-1', group_id: 'g-3', role: 'member',
+            id: 'gm-7', user_id: 'user-1', group_id: 'g-3', role: 'viewer',
             joined_at: '2024-03-02T00:00:00',
             user: { id: 'user-1', username: 'prima' },
           },

@@ -7,6 +7,7 @@ export interface User {
   username: string
   is_active: boolean
   created_at: string
+  role?: string
 }
 
 export interface Category {
