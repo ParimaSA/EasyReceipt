@@ -62,7 +62,7 @@
         </div>
         <button
           v-if="sidebarOpen"
-          @click="authStore.logout(); $router.push('/login')"
+          @click="authStore.logout(); $router.push('/')"
           class="mt-2 w-full flex items-center gap-2 px-2 py-2 rounded-xl hover:text-white transition-colors text-sm"
         >
           <ArrowRightOnRectangleIcon class="w-4 h-4" />
