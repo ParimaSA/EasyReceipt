@@ -50,6 +50,7 @@ export interface GroupMember {
 export interface Group {
   id: string
   name: string
+  icon?: string
   description?: string
   leader_id: string
   is_active: boolean
