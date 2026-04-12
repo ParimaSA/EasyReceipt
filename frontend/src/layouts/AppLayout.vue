@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen bg-[var(--color-bg)] overflow-hidden">
+  <div class="flex h-screen bg-white overflow-hidden">
     <!-- Sidebar -->
     <aside
       :class="[
@@ -27,9 +27,9 @@
         <NavItem :to="{ name: 'Records' }" :icon="DocumentTextIcon" label="My Records" :collapsed="!sidebarOpen" />
         <NavItem :to="{ name: 'Groups' }" :icon="UserGroupIcon" label="Groups" :collapsed="!sidebarOpen" />
 
-        <!-- Group sub-navigation -->
+        <!-- Group -->
         <template v-if="groupsStore.groups.length && sidebarOpen">
-          <div class="pt-2 pb-1 px-2">
+          <div class="pt-6 pb-1 px-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">My Groups</p>
           </div>
           <NavItem
@@ -56,14 +56,14 @@
           </div>
           <Transition name="fade">
             <div v-if="sidebarOpen" class="min-w-0">
-              <p class="font-medium truncate">{{ authStore.user?.username || "John Doe" }}</p>
+              <p class="font-medium truncate">{{ authStore.user?.username }}</p>
             </div>
           </Transition>
         </div>
         <button
           v-if="sidebarOpen"
           @click="authStore.logout(); $router.push('/login')"
-          class="mt-2 w-full flex items-center gap-2 px-2 py-2 rounded-xl text-ink-400 hover:text-white hover:bg-ink-700 transition-colors text-sm"
+          class="mt-2 w-full flex items-center gap-2 px-2 py-2 rounded-xl hover:text-white transition-colors text-sm"
         >
           <ArrowRightOnRectangleIcon class="w-4 h-4" />
           <span>Sign out</span>
@@ -81,25 +81,20 @@
     <!-- Main content -->
     <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
       <!-- Top bar -->
-      <header class="flex items-center gap-4 px-6 py-4 bg-white border-b border-slate-100 flex-shrink-0">
+      <header class="flex items-center gap-4 px-6 py-4 bg-amber-400 border-b border-slate-100 flex-shrink-0">
         <button
           @click="sidebarOpen = !sidebarOpen"
-          class="p-2 rounded-lg hover:bg-slate-100 transition-colors text-ink-600"
+          class="p-2 rounded-lg hover:bg-amber-300 transition-colors"
         >
           <Bars3Icon class="w-5 h-5" />
         </button>
         <div class="flex-1" />
-        <span class="text-xs font-semibold text-ink-400 uppercase tracking-wider bg-ink-50 px-3 py-1 rounded-full">
-          {{ authStore.user?.role }}
-        </span>
       </header>
 
       <!-- Page content -->
       <main class="flex-1 overflow-y-auto">
         <RouterView v-slot="{ Component }">
-          <Transition name="page" mode="out-in">
-            <component :is="Component" />
-          </Transition>
+          <component :is="Component" />
         </RouterView>
       </main>
     </div>
@@ -108,7 +103,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { RouterView, RouterLink } from 'vue-router'
+import { RouterView } from 'vue-router'
 import {
   HomeIcon, DocumentTextIcon, UserGroupIcon, FolderIcon,
   Bars3Icon, ArrowRightOnRectangleIcon,

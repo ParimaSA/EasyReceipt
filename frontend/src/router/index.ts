@@ -8,39 +8,44 @@ const router = createRouter({
       path: '/',
       name: 'Home',
       component: () => import('@/views/HomeView.vue'),
-      meta: { guest: true },
     },
-    // after login views
+    // paths after login
     {
-      path: '/',
+      path: '/:pathMatch(.*)*',
       component: () => import('@/layouts/AppLayout.vue'),
-      meta: { requiresAuth: true },
       children: [
-        { path: '', redirect: '/dashboard' },
         {
-          path: 'dashboard',
+          path: '/dashboard',
           name: 'Dashboard',
           component: () => import('@/views/dashboard/DashboardView.vue'),
         },
         {
-          path: 'records',
+          path: '/records',
           name: 'Records',
           component: () => import('@/views/records/RecordsView.vue'),
         },
         {
-          path: 'groups',
+          path: '/groups',
           name: 'Groups',
           component: () => import('@/views/groups/GroupListView.vue'),
         },
         {
-          path: 'groups/:id/dashboard',
+          path: '/groups/:id/dashboard',
           name: 'GroupDashboard',
           component: () => import('@/views/dashboard/GroupDashboardView.vue'),
         },
+        {
+          path: '/groups/:id',
+          name: 'GroupDetail',
+          component: () => import('@/views/groups/GroupDetailView.vue'),
+        },
+        {
+          path: '/groups/:id/records',
+          name: 'GroupRecords',
+          component: () => import('@/views/records/GroupRecordsView.vue'),
+        },
       ],
     },
-
-    { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 })
 

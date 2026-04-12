@@ -1,10 +1,7 @@
 <template>
-  <div class="p-6 space-y-6 max-w-6xl mx-auto">
+  <div class="p-12 space-y-6 max-w-6xl mx-auto">
     <div class="flex items-center justify-between">
-      <div>
-        <RouterLink :to="{ name: 'Groups' }" class="text-xs text-ink-400 hover:text-ink-600 mb-1 inline-block">← Groups</RouterLink>
-        <h1 class="font-display text-2xl font-bold text-ink-900">{{ group?.name }}</h1>
-      </div>
+      <h1 class="text-3xl font-bold">{{ group?.name }}</h1>
       <div class="flex gap-2">
         <RouterLink :to="{ name: 'GroupDetail', params: { id } }" class="btn-ghost text-sm">Members</RouterLink>
         <RouterLink :to="{ name: 'GroupRecords', params: { id } }" class="btn-ghost text-sm">Records</RouterLink>
@@ -34,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { ArrowTrendingUpIcon, ArrowTrendingDownIcon, BanknotesIcon, DocumentTextIcon } from '@heroicons/vue/24/outline'
 import { useRecordsStore } from '@/stores/records'
@@ -52,10 +49,16 @@ const groupsStore = useGroupsStore()
 const { dashboard } = storeToRefs(recordsStore)
 const { currentGroup: group } = storeToRefs(groupsStore)
 
-onMounted(async () => {
+async function loadData(groupId: string) {
   await Promise.all([
-    recordsStore.fetchGroupDashboard(id),
-    groupsStore.fetchGroup(id),
+    recordsStore.mockRecords(),
+    groupsStore.mockGroup(groupId),
   ])
+}
+
+onMounted(() => loadData(id))
+
+watch(() => route.params.id, (newId) => {
+  if (newId) loadData(newId as string)  // ← call it directly, pass newId
 })
 </script>

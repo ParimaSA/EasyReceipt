@@ -10,7 +10,84 @@ export const useGroupsStore = defineStore('groups', () => {
   const loading = ref(false)
 
   async function mockGroups() {
-    groups.value = []
+    groups.value = [
+      {
+        id: 'g-1',
+        name: 'Family',
+        description: 'Family shared expenses',
+        leader_id: 'user-1',
+        is_active: true,
+        created_at: '2024-01-01T00:00:00',
+        members: [
+          {
+            id: 'gm-1', user_id: 'user-1', group_id: 'g-1', role: 'leader',
+            joined_at: '2024-01-01T00:00:00',
+            user: { id: 'user-1', username: 'prima' },
+          },
+          {
+            id: 'gm-2', user_id: 'user-2', group_id: 'g-1', role: 'member',
+            joined_at: '2024-01-02T00:00:00',
+            user: { id: 'user-2', username: 'mom' },
+          },
+          {
+            id: 'gm-3', user_id: 'user-3', group_id: 'g-1', role: 'viewer',
+            joined_at: '2024-01-03T00:00:00',
+            user: { id: 'user-3', username: 'dad' },
+          },
+        ],
+      },
+      {
+        id: 'g-2',
+        name: 'Work Team',
+        description: 'Office and work related expenses',
+        leader_id: 'user-1',
+        is_active: true,
+        created_at: '2024-02-01T00:00:00',
+        members: [
+          {
+            id: 'gm-4', user_id: 'user-1', group_id: 'g-2', role: 'leader',
+            joined_at: '2024-02-01T00:00:00',
+            user: { id: 'user-1', username: 'prima' },
+          },
+          {
+            id: 'gm-5', user_id: 'user-4', group_id: 'g-2', role: 'member',
+            joined_at: '2024-02-02T00:00:00',
+            user: { id: 'user-4', username: 'alice' },
+          },
+        ],
+      },
+      {
+        id: 'g-3',
+        name: 'Trip 2024',
+        icon: '⛱',
+        description: 'Expenses for our 2024 trip',
+        leader_id: 'user-2',
+        is_active: true,
+        created_at: '2024-03-01T00:00:00',
+        members: [
+          {
+            id: 'gm-6', user_id: 'user-2', group_id: 'g-3', role: 'leader',
+            joined_at: '2024-03-01T00:00:00',
+            user: { id: 'user-2', username: 'mom' },
+          },
+          {
+            id: 'gm-7', user_id: 'user-1', group_id: 'g-3', role: 'member',
+            joined_at: '2024-03-02T00:00:00',
+            user: { id: 'user-1', username: 'prima' },
+          },
+          {
+            id: 'gm-8', user_id: 'user-5', group_id: 'g-3', role: 'viewer',
+            joined_at: '2024-03-03T00:00:00',
+            user: { id: 'user-5', username: 'bob' },
+          },
+        ],
+      },
+    ] as Group[]
+  }
+
+  function mockGroup(id: string) {
+    mockGroups()
+    currentGroup.value = groups.value.find(g => g.id == id) ?? null
   }
 
   async function fetchGroups() {
@@ -82,7 +159,7 @@ export const useGroupsStore = defineStore('groups', () => {
 
   return {
     groups, currentGroup, invitations, loading,
-    mockGroups, fetchGroups, fetchGroup, createGroup, updateGroup, deleteGroup,
+    mockGroups, mockGroup, fetchGroups, fetchGroup, createGroup, updateGroup, deleteGroup,
     fetchInvitations, createInvitation, revokeInvitation, joinGroup, removeMember,
   }
 })
