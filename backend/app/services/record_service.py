@@ -25,6 +25,7 @@ class RecordService:
 
     async def get_personal_records(
         self, current_user: User, skip: int = 0, limit: int = 50,
+        group_id: Optional[str] = None,
         record_type: Optional[RecordType] = None,
         category_id: Optional[str] = None,
         date_from: Optional[datetime] = None,
@@ -33,13 +34,15 @@ class RecordService:
         """Get personal records with optional filtering and pagination."""
         return await self._record_repo.get_personal_records(
             owner_id=current_user.id, skip=skip, limit=limit,
-            record_type=record_type, category_id=category_id,
-            date_from=date_from, date_to=date_to,
+            group_id=group_id, record_type=record_type, 
+            category_id=category_id, date_from=date_from, date_to=date_to,
         )
 
     async def get_group_records(
         self, group_id: str, current_user: User,
         skip: int = 0, limit: int = 50,
+        member_id: Optional[str] = None,
+        category_id: Optional[str] = None,
         record_type: Optional[RecordType] = None,
         date_from: Optional[datetime] = None,
         date_to: Optional[datetime] = None,
@@ -48,6 +51,7 @@ class RecordService:
         await self._assert_group_member(group_id, current_user.id)
         return await self._record_repo.get_group_records(
             group_id=group_id, skip=skip, limit=limit,
+            member_id=member_id, category_id=category_id,
             record_type=record_type, date_from=date_from, date_to=date_to,
         )
 
