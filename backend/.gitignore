@@ -16,5 +16,10 @@ coverage
 # Benchmarking
 benchmarks/graphs
 
+# Pycache
+**/__pycache__/
+*.py[cod]
+*$py.class
+
 # ignore additional files using core.excludesFile
 # https://git-scm.com/docs/gitignore
