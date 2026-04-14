@@ -4,8 +4,8 @@ from fastapi import Depends, Header
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_db
-from backend.app.services.auth_service import AuthService
-from backend.app.services.group_service import GroupService
+from app.services.auth_service import AuthService
+from app.services.group_service import GroupService
 from app.core.security import decode_token
 from app.core.enums import GroupMemberRole
 from app.core.exceptions import AuthenticationError

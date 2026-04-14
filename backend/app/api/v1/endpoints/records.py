@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends, UploadFile, File, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Optional, List
+from typing import Optional
 from datetime import datetime
 
 from app.db.session import get_db
-from app.middleware.auth import get_current_user, require_group_member, require_group_recorder
+from app.middleware.auth import get_current_user, require_group_member
 from app.services.record_service import RecordService
 from app.services.ocr_service import OCRService
-from app.schemas.record import RecordCreate, RecordUpdate, RecordResponse, DashboardResponse, OCRResult
+from app.schemas.record import RecordCreate, RecordUpdate, RecordResponse, OCRResult
+from app.schemas.dashboard import DashboardResponse
 from app.core.enums import RecordType
 from app.models.models import User
 
