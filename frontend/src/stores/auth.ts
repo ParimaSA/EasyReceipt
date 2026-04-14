@@ -9,8 +9,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => !!user.value)
 
-  mockMe()
-
   function mockMe() {
     user.value = {
       id: "user-1",
@@ -61,5 +59,5 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
   }
 
-  return { user, loading, isAuthenticated, fetchMe, login, register, logout }
+  return { user, loading, isAuthenticated, mockMe, fetchMe, login, register, logout }
 })

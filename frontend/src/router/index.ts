@@ -13,6 +13,7 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       component: () => import('@/layouts/AppLayout.vue'),
+      meta: { requiresAuth: true },
       children: [
         {
           path: '/dashboard',
@@ -49,21 +50,21 @@ const router = createRouter({
   ],
 })
 
-// router.beforeEach(async (to) => {
-//   const auth = useAuthStore()
+router.beforeEach(async (to) => {
+  const auth = useAuthStore()
 
-//   if (!auth.user && localStorage.getItem('access_token')) {
-//     await auth.fetchMe()
-//   }
+  if (!auth.user && localStorage.getItem('access_token')) {
+    await auth.fetchMe()
+  }
 
-//   if (to.meta.requiresAuth && !auth.isAuthenticated) {
-//     return { name: 'Home', query: { redirect: to.fullPath } }
-//   }
-//   if (to.meta.guest && auth.isAuthenticated) {
-//     return { name: 'Dashboard' }
-//   }
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    return { name: 'Home', query: { redirect: to.fullPath } }
+  }
+  if (to.meta.guest && auth.isAuthenticated) {
+    return { name: 'Dashboard' }
+  }
 
-//   return true
-// })
+  return true
+})
 
 export default router
