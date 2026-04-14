@@ -4,7 +4,6 @@ from typing import List
 
 from app.db.session import get_db
 from app.middleware.auth import get_current_user
-from app.repositories.user_repository import UserRepository
 from app.repositories.category_repository import CategoryRepository
 from app.schemas.record import CategoryCreate, CategoryResponse
 from app.core.exceptions import AuthorizationError, NotFoundError
