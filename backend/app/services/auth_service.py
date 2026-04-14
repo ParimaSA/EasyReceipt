@@ -7,7 +7,7 @@ from app.repositories.user_repository import UserRepository
 from app.repositories.category_repository import CategoryRepository
 from app.core.security import verify_password, create_access_token, create_refresh_token, decode_token
 from app.core.exceptions import AuthenticationError, ConflictError
-from app.schemas.auth import UserRegister, UserLogin, Token
+from app.schemas.auth import UserRegister, UserLogin, Token, UserBase
 
 
 class AuthService:
@@ -49,6 +49,12 @@ class AuthService:
         if not user or not user.is_active:
             raise AuthenticationError("User not found or inactive")
         return self._build_token(user.id)
+    
+    async def validate_user_access(self, user_id: str) -> UserBase:
+        user = await self._user_repo.get_by_id(user_id)
+        if not user or not user.is_active:
+            raise AuthenticationError("User not found or inactive")
+        return user
 
     def _build_token(self, user_id: str) -> Token:
         """Helper to create access and refresh tokens for a user."""

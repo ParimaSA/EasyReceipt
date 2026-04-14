@@ -2,7 +2,7 @@
 Group Service — business logic only. Calls GroupRepository.
 """
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 from app.repositories.group_repository import GroupRepository
 from app.repositories.user_repository import UserRepository
@@ -113,6 +113,20 @@ class GroupService:
         if not member:
             raise NotFoundError("Member not found")
         await self._group_repo.update_member_role(member, new_role)
+
+    async def validate_membership(self, group_id: str, user_id: str, required_role: Optional[GroupMemberRole] = None):
+        """Business logic to check if a user is allowed to perform group actions."""
+        member = await self._group_repo.get_member(group_id, user_id)
+        if not member:
+            raise AuthorizationError("You are not a member of this group")
+        
+        if required_role == GroupMemberRole.LEADER and member.role != GroupMemberRole.LEADER:
+            raise AuthorizationError("Only the group leader can perform this action")
+            
+        if required_role == "recorder" and member.role == GroupMemberRole.VIEWER:
+            raise AuthorizationError("Viewers cannot create or modify records")
+        
+        return member
 
     async def _get_leader_group(self, group_id: str, user: User) -> Group:
         """Helper to get group and verify user is the leader."""

@@ -4,11 +4,11 @@ from fastapi import Depends, Header
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_db
-from app.repositories.user_repository import UserRepository
-from app.repositories.group_repository import GroupRepository
+from backend.app.services.auth_service import AuthService
+from backend.app.services.group_service import GroupService
 from app.core.security import decode_token
 from app.core.enums import GroupMemberRole
-from app.core.exceptions import AuthenticationError, AuthorizationError
+from app.core.exceptions import AuthenticationError
 from app.models.models import User
 
 
@@ -27,12 +27,10 @@ async def get_current_user(
     if not payload or payload.get("type") != "access":
         raise AuthenticationError("Invalid or expired token")
 
-    # Fetch user from DB
+    # Validate user access and return user object
     user_id = payload.get("sub")
-    user = await UserRepository(db).get_by_id(user_id)
-    if not user or not user.is_active:
-        raise AuthenticationError("User not found or inactive")
-    return user
+    auth_service = AuthService(db)
+    return await auth_service.validate_user_access(user_id)
 
 
 def require_group_member(group_id_param: str = "group_id"):
@@ -45,9 +43,8 @@ def require_group_member(group_id_param: str = "group_id"):
         current_user: User = Depends(get_current_user),
         db: AsyncSession = Depends(get_db),
     ) -> User:
-        member = await GroupRepository(db).get_member(group_id, current_user.id)
-        if not member:
-            raise AuthorizationError("You are not a member of this group")
+        service = GroupService(db)
+        await service.validate_membership(group_id, current_user.id)
         return current_user
     return _check
 
@@ -62,11 +59,8 @@ def require_group_recorder(group_id_param: str = "group_id"):
         current_user: User = Depends(get_current_user),
         db: AsyncSession = Depends(get_db),
     ) -> User:
-        member = await GroupRepository(db).get_member(group_id, current_user.id)
-        if not member:
-            raise AuthorizationError("You are not a member of this group")
-        if member.role == GroupMemberRole.VIEWER:
-            raise AuthorizationError("Viewers cannot create or modify records")
+        service = GroupService(db)
+        await service.validate_membership(group_id, current_user.id, required_role="recorder")
         return current_user
     return _check
 
@@ -80,8 +74,7 @@ def require_group_leader(group_id_param: str = "group_id"):
         current_user: User = Depends(get_current_user),
         db: AsyncSession = Depends(get_db),
     ) -> User:
-        member = await GroupRepository(db).get_member(group_id, current_user.id)
-        if not member or member.role != GroupMemberRole.LEADER:
-            raise AuthorizationError("Only the group leader can perform this action")
+        service = GroupService(db)
+        await service.validate_membership(group_id, current_user.id, required_role=GroupMemberRole.LEADER)
         return current_user
     return _check
