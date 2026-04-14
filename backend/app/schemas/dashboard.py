@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, List
-from .records import RecordResponse
+from .record import RecordResponse
 
 
 class PeriodSummary(BaseModel):

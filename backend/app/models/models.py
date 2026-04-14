@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import uuid
 from app.db.session import Base
-from app.core.enums import UserRole, GroupMemberRole, RecordType
+from app.core.enums import GroupMemberRole, RecordType
 
 
 def gen_uuid():
