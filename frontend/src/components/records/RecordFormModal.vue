@@ -57,7 +57,7 @@
             </div>
           </div>
 
-          <div>
+          <div v-if="form.type !== 'income'">
             <label class="label">Category</label>
             <select v-model="form.category_id" class="input">
               <option value="">— None —</option>

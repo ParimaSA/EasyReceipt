@@ -12,13 +12,13 @@
       <!-- Group -->
       <select v-model="filter.group_id" @change="load" class="input w-auto text-sm py-2">
         <option value="">All Groups</option>
-        <option v-for="g in mockGroups" :key="g.id" :value="g.id">{{ g.name }}</option>
+        <option v-for="g in groups" :key="g.id" :value="g.id">{{ g.name }}</option>
       </select>
 
       <!-- Category -->
       <select v-model="filter.category_id" @change="load" class="input w-auto text-sm py-2">
         <option value="">All Categories</option>
-        <option v-for="c in mockCategories" :key="c.id" :value="c.id">
+        <option v-for="c in categories" :key="c.id" :value="c.id">
           {{ c.icon }} {{ c.name }}
         </option>
       </select>
@@ -100,14 +100,18 @@
 import { ref, onMounted } from 'vue'
 import { PlusIcon, DocumentTextIcon } from '@heroicons/vue/24/outline'
 import { useRecordsStore } from '@/stores/records'
+import { useGroupsStore } from '@/stores/groups'
 import { storeToRefs } from 'pinia'
 import RecordRow from '@/components/records/RecordRow.vue'
 import RecordFormModal from '@/components/records/RecordFormModal.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import type { Record } from '@/types'
 
-const store = useRecordsStore()
-const { records, total, loading } = storeToRefs(store)
+const recordsStore = useRecordsStore()
+const groupsStore = useGroupsStore()
+
+const { records, total, categories, loading } = storeToRefs(recordsStore)
+const { groups } = storeToRefs(groupsStore)
 
 const showForm = ref(false)
 const editingRecord = ref<Record | undefined>()
@@ -123,26 +127,10 @@ const filter = ref({
   date_to: '',
 })
 
-// Mock groups & categories
-const mockGroups = [
-  { id: 'g-1', name: 'Family' },
-  { id: 'g-2', name: 'Work Team' },
-  { id: 'g-3', name: 'Trip 2024' },
-]
-
-const mockCategories = [
-  { id: 'cat-1', name: 'Salary',        icon: '💰' },
-  { id: 'cat-2', name: 'Housing',       icon: '🏠' },
-  { id: 'cat-3', name: 'Food',          icon: '🍔' },
-  { id: 'cat-4', name: 'Freelance',     icon: '💻' },
-  { id: 'cat-5', name: 'Utilities',     icon: '⚡' },
-  { id: 'cat-6', name: 'Entertainment', icon: '🎬' },
-  { id: 'cat-7', name: 'Investment',    icon: '📈' },
-  { id: 'cat-8', name: 'Transport',     icon: '🚕' },
-]
-
 async function load() {
-  await store.fetchPersonal({
+  await groupsStore.fetchGroups()
+  await recordsStore.fetchCategories()
+  await recordsStore.fetchPersonal({
     skip: skip.value,
     limit,
     type: filter.value.type as any || undefined,
@@ -167,12 +155,13 @@ function closeForm() { showForm.value = false; editingRecord.value = undefined }
 
 async function onSaved(_record: Record) {
   closeForm()
+  skip.value = 0
   await load()
 }
 
 async function doDelete() {
   if (!deletingRecord.value) return
-  await store.deleteRecord(deletingRecord.value.id)
+  await recordsStore.deleteRecord(deletingRecord.value.id)
   deletingRecord.value = null
 }
 

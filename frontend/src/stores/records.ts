@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { recordsApi } from '@/api'
-import type { Record, Dashboard, Paginated, RecordType } from '@/types'
+import { categoriesApi, recordsApi } from '@/api'
+import { type Record, type Dashboard, type Paginated, type RecordType, Category } from '@/types'
 
 export const useRecordsStore = defineStore('records', () => {
   const records = ref<Record[]>([])
   const total = ref(0)
   const dashboard = ref<Dashboard | null>(null)
+  const categories = ref<Category[]>([])
   const loading = ref(false)
 
   function mockRecords() {
@@ -151,6 +152,11 @@ export const useRecordsStore = defineStore('records', () => {
     }
   }
 
+  async function fetchCategories() {
+    const { data } = await categoriesApi.list()
+    categories.value = data
+  }
+
   async function fetchPersonalDashboard(params?: { date_from?: string; date_to?: string }) {
     const { data } = await recordsApi.personalDashboard(params)
     dashboard.value = data
@@ -182,8 +188,8 @@ export const useRecordsStore = defineStore('records', () => {
   }
 
   return {
-    records, total, dashboard, loading,
-    mockRecords, fetchPersonal, fetchGroup,
+    records, total, dashboard, categories, loading,
+    mockRecords, fetchPersonal, fetchGroup, fetchCategories,
     fetchPersonalDashboard, fetchGroupDashboard,
     createRecord, updateRecord, deleteRecord,
   }

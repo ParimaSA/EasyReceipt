@@ -4,7 +4,7 @@
     <div :class="['w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0',
       record.type === 'income' ? 'bg-green-200' : 'bg-red-200']">
       <component
-        :is="record.type === 'income' ? ArrowDownLeftIcon : ArrowUpRightIcon"
+        :is="record.type === 'income' ? ArrowUpRightIcon : ArrowDownLeftIcon"
         :class="['w-4 h-4', record.type === 'income' ? 'text-green-600' : 'text-red-600']"
       />
     </div>
