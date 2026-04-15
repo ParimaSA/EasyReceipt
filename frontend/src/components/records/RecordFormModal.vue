@@ -57,20 +57,18 @@
             </div>
           </div>
 
-          <div v-if="form.type !== 'income'">
-            <div class="flex w-full justify-between">
-              <label class="label">Category</label>
-              <button type="button" @click="showCategoryManager = true" class="text-xs text-amber-600 hover:underline">
-                Manage
-              </button>
-            </div>
-            <select v-model="form.category_id" class="input">
-              <option value="">— None —</option>
-              <option v-for="c in categories" :key="c.id" :value="c.id">
-                {{ c.icon }} {{ c.name }}
-              </option>
-            </select>
+          <div class="flex w-full justify-between">
+            <label class="label">Category</label>
+            <button type="button" @click="showCategoryManager = true" class="text-xs text-amber-600 hover:underline">
+              Manage
+            </button>
           </div>
+          <select v-model="form.category_id" class="input">
+            <option value="">— None —</option>
+            <option v-for="c in categories" :key="c.id" :value="c.id">
+              {{ c.icon }} {{ c.name }}
+            </option>
+          </select>
 
           <div v-if="groups.length && !editRecord">
             <label class="label">Post to Group (optional)</label>

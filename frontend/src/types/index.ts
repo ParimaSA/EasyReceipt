@@ -80,6 +80,7 @@ export interface PeriodSummary {
 export interface CategoryBreakdown {
   category_id?: string
   category_name: string
+  category_color?: string
   total: number
   count: number
   percentage: number

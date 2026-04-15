@@ -248,6 +248,7 @@ class RecordRepository:
             select(
                 Record.category_id,
                 Category.name.label("category_name"),
+                Category.color.label("category_color"),
                 func.sum(Record.amount).label("total"),
                 func.count(Record.id).label("count"),
             )
@@ -266,6 +267,7 @@ class RecordRepository:
             {
                 "category_id": r.category_id,
                 "category_name": r.category_name or "Uncategorized",
+                "category_color": r.category_color or "#0077FF",
                 "total": float(r.total),
                 "count": r.count,
                 "percentage": round(float(r.total) / grand_total * 100, 1),

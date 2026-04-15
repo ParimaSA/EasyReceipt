@@ -12,6 +12,7 @@ class PeriodSummary(BaseModel):
 class CategoryBreakdown(BaseModel):
     category_id: Optional[str]
     category_name: str
+    category_color: Optional[str] = None
     total: float
     count: int
     percentage: float

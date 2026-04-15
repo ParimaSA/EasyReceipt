@@ -14,7 +14,16 @@
       <p class="font-medium truncate">{{ record.title }}</p>
       <p class="text-xs">
         {{ formatDate(record.date) }}
-        <span v-if="record.category" class="ml-1">· {{ record.category.icon }} {{ record.category.name }}</span>
+        <span 
+          v-if="record.category" 
+          class="ml-2 px-2 py-0.5 rounded-full text-white"
+          :style="{ 
+            backgroundColor: record.category.color,
+          }"
+        >
+          <span class="mr-1">{{ record.category.icon }}</span>
+          {{ record.category.name }}
+        </span>
       </p>
     </div>
 

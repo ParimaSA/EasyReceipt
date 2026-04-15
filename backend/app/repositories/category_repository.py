@@ -56,7 +56,7 @@ class CategoryRepository:
             {"name": "Utilities", "icon": "⚡", "color": "#DDA0DD"},
             {"name": "Salary", "icon": "💰", "color": "#98FB98"},
             {"name": "Freelance", "icon": "💻", "color": "#87CEEB"},
-            {"name": "Investment", "icon": "📈", "color": "#F0E68C"},
+            {"name": "Investment", "icon": "📈", "color": "#FAE849"},
             {"name": "Other", "icon": "📦", "color": "#D3D3D3"},
         ]
 
