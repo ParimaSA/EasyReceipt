@@ -1,7 +1,3 @@
-"""
-Record Service — business logic layer.
-Delegates data access to RecordRepository and GroupRepository.
-"""
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional, List, Tuple
 from datetime import datetime

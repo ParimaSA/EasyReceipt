@@ -135,7 +135,9 @@ async def scan_receipt(
     Returns extracted title, amount, and date to pre-fill the form.
     """
     contents = await file.read()
-    return await _ocr.extract_from_image(contents)
+    result = await _ocr.extract_from_image(contents)
+    print(result)
+    return result
 
 
 @router.post("/scan-and-save", response_model=RecordResponse, status_code=201)

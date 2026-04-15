@@ -1,7 +1,3 @@
-"""
-OCR Service — receipt scanning logic.
-Uses Pillow + pytesseract to extract text, then parses amounts/dates.
-"""
 import re
 import os
 import uuid

@@ -1,7 +1,3 @@
-"""
-Auth Service — business logic layer.
-Only calls repositories. Never touches DB directly.
-"""
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.repositories.user_repository import UserRepository
 from app.repositories.category_repository import CategoryRepository
