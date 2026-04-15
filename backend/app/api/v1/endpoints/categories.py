@@ -9,10 +9,10 @@ from app.schemas.record import CategoryCreate, CategoryResponse
 from app.core.exceptions import AuthorizationError, NotFoundError
 from app.models.models import User
 
-router = APIRouter(tags=["users"])
+router = APIRouter(prefix="/categories", tags=["categories"])
 
 
-@router.get("/categories", response_model=List[CategoryResponse])
+@router.get("", response_model=List[CategoryResponse])
 async def list_categories(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
@@ -21,7 +21,7 @@ async def list_categories(
     return await CategoryRepository(db).get_available(current_user.id)
 
 
-@router.post("/categories", response_model=CategoryResponse, status_code=201)
+@router.post("", response_model=CategoryResponse, status_code=201)
 async def create_category(
     data: CategoryCreate,
     current_user: User = Depends(get_current_user),
@@ -31,7 +31,7 @@ async def create_category(
     return await CategoryRepository(db).create(current_user.id, data)
 
 
-@router.delete("/categories/{category_id}", status_code=204)
+@router.delete("/{category_id}", status_code=204)
 async def delete_category(
     category_id: str,
     current_user: User = Depends(get_current_user),

@@ -16,7 +16,7 @@ from app.models.models import User
 router = APIRouter(prefix="/groups", tags=["groups"])
 
 
-@router.get("/", response_model=List[GroupResponse])
+@router.get("", response_model=List[GroupResponse])
 async def list_my_groups(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
@@ -25,7 +25,7 @@ async def list_my_groups(
     return await GroupService(db).get_user_groups(current_user)
 
 
-@router.post("/", response_model=GroupResponse, status_code=201)
+@router.post("", response_model=GroupResponse, status_code=201)
 async def create_group(
     data: GroupCreate,
     # Any authenticated user can create a group

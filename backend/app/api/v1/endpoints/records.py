@@ -92,7 +92,7 @@ async def group_dashboard(
     return await RecordService(db).get_group_dashboard(group_id, current_user, date_from, date_to)
 
 
-@router.post("/", response_model=RecordResponse, status_code=201)
+@router.post("", response_model=RecordResponse, status_code=201)
 async def create_record(
     data: RecordCreate,
     current_user: User = Depends(get_current_user),

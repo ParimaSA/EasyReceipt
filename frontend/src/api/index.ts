@@ -32,7 +32,7 @@ export const recordsApi = {
   create: (data: {
     title: string; amount: number; type: RecordType; date: string
     note?: string; category_id?: string; group_id?: string
-  }) => api.post<Record>('/records/', data),
+  }) => api.post<Record>('/records', data),
 
   update: (id: string, data: Partial<{
     title: string; amount: number; type: RecordType
@@ -50,7 +50,7 @@ export const recordsApi = {
 }
 
 export const groupsApi = {
-  list: () => api.get<Group[]>('/groups/'),
+  list: () => api.get<Group[]>('/groups'),
   get: (id: string) => api.get<Group>(`/groups/${id}`),
   create: (data: { name: string; description?: string }) => api.post<Group>('/groups/', data),
   update: (id: string, data: { name?: string; description?: string }) =>
