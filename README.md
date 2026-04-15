@@ -9,6 +9,9 @@ Both the backend and frontend follow a **layered architecture**. Each layer may 
 
 ### Architecture Diagram
 
+![Diagram](screenshots/architecture_diagram.png)
+
+#### Layer Definition
 ```
 ┌─────────────────────────────────────────────┐
 │  Presentation Layer                         │
@@ -39,13 +42,6 @@ Both the backend and frontend follow a **layered architecture**. Each layer may 
 │  Database  (MySQL via aiomysql)             │
 └─────────────────────────────────────────────┘
 ```
-
-**Cross-layer rule enforcement:**
-- Repositories only import from `app/models` and `app/schemas`
-- Services only import from `app/repositories`
-- Endpoints only import from `app/services` and `app/middleware`
-- No endpoint imports a repository directly
-- No repository imports a service
 
 ### Frontend Layers
 
@@ -92,7 +88,7 @@ The following table outlines the specific capabilities assigned to each role wit
 ### Clone the repository
 
 ```bash
-git clone <repo>
+git clone https://github.com/ParimaSA/EasyReceipt
 cd EasyReceipt
 ```
 
@@ -146,7 +142,7 @@ source venv/bin/activate        # activate the environment
 uvicorn app.main:app --reload
 ```
 
-Access at: http://localhost:3000
+Access at: http://localhost:8000
 
 
 **Frontend:**
