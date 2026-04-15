@@ -9,44 +9,57 @@ const router = createRouter({
       name: 'Home',
       component: () => import('@/views/HomeView.vue'),
     },
-    // paths after login
     {
-      path: '/:pathMatch(.*)*',
+      path: '/join/:token',
+      name: 'JoinGroup',
+      component: () => import('@/views/groups/JoinGroupView.vue'),
+    },
+    // Path after login
+    {
+      path: '/',
       component: () => import('@/layouts/AppLayout.vue'),
       meta: { requiresAuth: true },
       children: [
         {
-          path: '/dashboard',
+          path: 'dashboard',
           name: 'Dashboard',
           component: () => import('@/views/dashboard/DashboardView.vue'),
         },
         {
-          path: '/records',
+          path: 'records',
           name: 'Records',
           component: () => import('@/views/records/RecordsView.vue'),
         },
         {
-          path: '/groups',
+          path: 'groups',
           name: 'Groups',
           component: () => import('@/views/groups/GroupListView.vue'),
         },
         {
-          path: '/groups/:id/dashboard',
+          path: 'groups/:id/dashboard',
           name: 'GroupDashboard',
           component: () => import('@/views/dashboard/GroupDashboardView.vue'),
         },
         {
-          path: '/groups/:id',
+          path: 'groups/:id',
           name: 'GroupDetail',
           component: () => import('@/views/groups/GroupDetailView.vue'),
         },
         {
-          path: '/groups/:id/records',
+          path: 'groups/:id/records',
           name: 'GroupRecords',
           component: () => import('@/views/records/GroupRecordsView.vue'),
         },
       ],
     },
+    {
+      path: '/:catchAll(.*)*', 
+      name: 'NotFound',
+      redirect: (to) => {
+        const auth = useAuthStore()
+        return auth.isAuthenticated ? { name: 'Dashboard' } : { name: 'Home' }
+      }
+    }
   ],
 })
 
@@ -54,13 +67,18 @@ router.beforeEach(async (to) => {
   const auth = useAuthStore()
 
   if (!auth.user && localStorage.getItem('access_token')) {
-    await auth.fetchMe()
+    try {
+      await auth.fetchMe()
+    } catch (e) {
+      localStorage.removeItem('access_token')
+    }
   }
 
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
     return { name: 'Home', query: { redirect: to.fullPath } }
   }
-  if (to.meta.guest && auth.isAuthenticated) {
+
+  if (to.name === 'Home' && auth.isAuthenticated) {
     return { name: 'Dashboard' }
   }
 
