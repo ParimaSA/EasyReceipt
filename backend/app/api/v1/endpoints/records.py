@@ -20,7 +20,6 @@ _ocr = OCRService()
 async def list_personal_records(
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=200),
-    group_id: Optional[str] = None,
     type: Optional[RecordType] = None,
     category_id: Optional[str] = None,
     date_from: Optional[datetime] = None,
@@ -31,7 +30,7 @@ async def list_personal_records(
     """List personal records for the authenticated user."""
     records, total = await RecordService(db).get_personal_records(
         current_user, skip=skip, limit=limit,
-        group_id=group_id, record_type=type, category_id=category_id,
+        record_type=type, category_id=category_id,
         date_from=date_from, date_to=date_to,
     )
     return {

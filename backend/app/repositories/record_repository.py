@@ -30,7 +30,6 @@ class RecordRepository:
         owner_id: str,
         skip: int = 0,
         limit: int = 50,
-        group_id: Optional[str] = None,
         category_id: Optional[str] = None,
         record_type: Optional[RecordType] = None,
         date_from: Optional[datetime] = None,
@@ -38,8 +37,6 @@ class RecordRepository:
     ) -> Tuple[List[Record], int]:
         """Get personal records for a user, with optional filtering and pagination."""
         conditions = [Record.owner_id == owner_id, Record.group_id == None]
-        if group_id:
-            conditions.append(Record.group_id == group_id)
         if category_id:
             conditions.append(Record.category_id == category_id)
         if record_type:
