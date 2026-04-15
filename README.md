@@ -1,75 +1,173 @@
-# EasyReceipt
+# EasyReceipt 🧾
 
-# Easy Receipt
+A full-stack income & expense management application with personal and group accounts, receipt scanning, dashboards, and role-based access control.
 
-Easy Receipt is a web application that helps users manage **personal and shared income/expense records**.
-Users can track their own receipts or create groups to share financial records with others.
-The system also supports **QR code scanning** to quickly add receipt information.
 
 ---
 
-## Features
+## System Architecture Overview
 
-* Personal income and expense tracking
-* Create and manage shared expense groups
-* Add receipts manually
-* Add receipts by scanning QR codes
-* View transaction history
-* Simple and user-friendly interface
+Both the backend and frontend follow a **layered architecture**. Each layer may only communicate with the layer directly adjacent to it. No layer skipping is permitted.
+
+### Architecture Diagram
+
+```
+┌─────────────────────────────────────────────┐
+│  Presentation Layer                         │
+│  • Get input and display the result         │
+│  • Call the          │
+└──────────────────┬──────────────────────────┘
+                   ▼
+┌─────────────────────────────────────────────┐
+│  API Layer  (app/api/v1/endpoints/)         │
+│  • Validates HTTP input via Pydantic        │
+│  • Applies role decorator dependencies      │
+│  • Returns Pydantic response schemas        │
+└──────────────────┬──────────────────────────┘
+                   │  calls ↓
+┌─────────────────────────────────────────────┐
+│  Business Layer  (app/services/)            │
+│  • All business logic lives here            │
+│  • Enforces ownership & group membership    │
+└──────────────────┬──────────────────────────┘
+                   │  calls ↓
+┌─────────────────────────────────────────────┐
+│  Persistence Layer (app/repositories/)      │
+│  • All DB queries (SQLAlchemy)              │
+│  • Returns ORM model instances              │
+└──────────────────┬──────────────────────────┘
+                   │  talks to ↓
+┌─────────────────────────────────────────────┐
+│  Database  (MySQL via aiomysql)             │
+└─────────────────────────────────────────────┘
+```
+
+**Cross-layer rule enforcement:**
+- Repositories only import from `app/models` and `app/schemas`
+- Services only import from `app/repositories`
+- Endpoints only import from `app/services` and `app/middleware`
+- No endpoint imports a repository directly
+- No repository imports a service
+
+### Frontend Layers
+
+```
+Views  →  Stores (Pinia)  →  API modules  →  Axios client  →  Backend
+```
 
 ---
 
-## System Architecture
+## User roles & Permissions
 
-The project follows a **layered architecture** to separate responsibilities between different parts of the system.
+### Roles Definition
 
-Frontend (Vue)
-⬇
-REST API (Node.js + Express)
-⬇
-Controller Layer
-⬇
-Service / Repository Layer
-⬇
-MySQL Database
+| Role | Definition |
+|---|---|
+| `leader` | The administrative of the group. This user has full authority over the group’s, including financial management and membership governance. |
+| `member` | A collaborative role designed for active contributors. Members can track and manage financial data but do not have authority over the group’s composition. |
+| `viewer` | A read-only role intended for stakeholders who need to monitor the financial data without the ability to modify it. |
 
+### Role Permission
 
-## Installation
+---
+
+## Technology Stack
+
+| Component | Technology |
+|---|---|
+| Frontend | Vue.js + TypeScript |
+| Backend | FastAPI |
+| Database | MySQL via SQLAlchemy |
+| Container | Docker + Docker Compose + Nginx |
+---
+
+## Installation & Setup Instructions
+
 
 ### Clone the repository
 
-```
-git clone https://github.com/ParimaSA/EasyReceipt
+```bash
+git clone <repo>
+cd EasyReceipt
 ```
 
----
+### Local Development
 
-### Frontend Setup
-
+**Backend:**
+1. Prepare the environment
+```bash
+cd backend
+python -m venv venv && source venv/bin/activate
 ```
+2. Install the dependency
+```bash
+pip install -r requirements.txt
+```
+3. Create .env file from example
+```bash
+cp .env.example .env          # edit DATABASE_URL etc.
+```
+4. Migrate the database
+```bash
+alembic upgrade head
+```
+
+**Frontend:**
+1. Install the dependency
+```bash
 cd frontend
 npm install
-npm run dev
 ```
-
-The frontend will run at:
-
-```
-http://localhost:5173
-```
-
 ---
 
-### Backend Setup
+## How to run the system
 
+### Docker
+```bash
+docker-compose up --build
 ```
+
+Access the services:
+- Frontend: http://localhost:80
+- Backend API: http://localhost:8000
+- API docs (Swagger): http://localhost:8000/docs
+
+### Manual Startup (Local Development)
+
+**Backend:**
+```bash
 cd backend
-npm install
+source venv/bin/activate        # activate the environment
+uvicorn app.main:app --reload
+```
+
+Access at: http://localhost:3000
+
+
+**Frontend:**
+```bash
+cd frontend
 npm run dev
 ```
 
-The backend server will run at:
+Access at: http://localhost:5173
 
-```
-http://localhost:3000
-```
+---
+## Screenshots of the system
+
+| Home Page | 
+| :---: |
+| ![Home](screenshots/home.png) |
+### Personal Account
+| Dashboard | Record |
+| :---: | :---: |
+| ![Dashboard](screenshots/dashboard.png) | ![Records](screenshots/record.png) |
+
+### Group Collaboration
+| Group List | Group Dashboard |
+| :---: | :---: |
+| ![Group List](screenshots/group.png) | ![Group Dashboard](screenshots/groupDashboard.png) |
+
+| Group Member | Group Record |
+| :---: | :---: |
+| ![Group Member](screenshots/groupMember.png) | ![Group Records](screenshots/groupRecord.png) |
