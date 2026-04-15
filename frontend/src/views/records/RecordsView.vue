@@ -100,12 +100,14 @@ import RecordRow from '@/components/records/RecordRow.vue'
 import RecordFormModal from '@/components/records/RecordFormModal.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import type { Record } from '@/types'
+import { useCategoriesStore } from '@/stores/categories'
 
 const recordsStore = useRecordsStore()
 const groupsStore = useGroupsStore()
+const categoriesStore = useCategoriesStore()
 
-const { records, total, categories, loading } = storeToRefs(recordsStore)
-const { groups } = storeToRefs(groupsStore)
+const { records, total, loading } = storeToRefs(recordsStore)
+const { categories } = storeToRefs(categoriesStore)
 
 const showForm = ref(false)
 const editingRecord = ref<Record | undefined>()
@@ -122,7 +124,7 @@ const filter = ref({
 
 async function load() {
   await groupsStore.fetchGroups()
-  await recordsStore.fetchCategories()
+  await categoriesStore.fetchCategories()
   await recordsStore.fetchPersonal({
     skip: skip.value,
     limit,

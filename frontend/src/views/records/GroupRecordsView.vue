@@ -109,14 +109,17 @@ import RecordRow from '@/components/records/RecordRow.vue'
 import RecordFormModal from '@/components/records/RecordFormModal.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import type { Record } from '@/types'
+import { useCategoriesStore } from '@/stores/categories'
 
 const route = useRoute()
 const id = route.params.id as string
 const recordsStore = useRecordsStore()
+const categoriesStore = useCategoriesStore()
 const groupsStore = useGroupsStore()
 const authStore = useAuthStore()
 
-const { records, total, categories, loading } = storeToRefs(recordsStore)
+const { records, total, loading } = storeToRefs(recordsStore)
+const { categories } = storeToRefs(categoriesStore)
 const { currentGroup: group } = storeToRefs(groupsStore)
 
 const showForm = ref(false)
@@ -139,7 +142,7 @@ const canRecord = computed(() => {
 
 async function load() {
   await groupsStore.fetchGroup(id)
-  await recordsStore.fetchCategories()
+  await categoriesStore.fetchCategories()
   await recordsStore.fetchGroup(id, {
     skip: skip.value, limit,
     type: filter.value.type as any || undefined,

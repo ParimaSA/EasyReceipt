@@ -60,7 +60,9 @@
           <div v-if="form.type !== 'income'">
             <div class="flex w-full justify-between">
               <label class="label">Category</label>
-              <button class="label text-[10px] text-gray-500 hover:text-gray-600">Edit Category</button>
+              <button type="button" @click="showCategoryManager = true" class="text-xs text-amber-600 hover:underline">
+                Manage
+              </button>
             </div>
             <select v-model="form.category_id" class="input">
               <option value="">— None —</option>
@@ -101,26 +103,40 @@
       </div>
     </div>
   </Teleport>
+
+  <CategoryManagerModal
+    v-if="showCategoryManager"
+    :categories="categories"
+    @close="showCategoryManager = false"
+    @updated="categories = $event"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref, watch, onMounted, computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { XMarkIcon, CameraIcon } from '@heroicons/vue/24/outline'
 import { format } from 'date-fns'
 import { categoriesApi, recordsApi } from '@/api'
 import { useGroupsStore } from '@/stores/groups'
 import { useAuthStore } from '@/stores/auth'
-import type { Record, Category, RecordType } from '@/types'
+import { useCategoriesStore } from '@/stores/categories'
+import type { Record, RecordType } from '@/types'
+import CategoryManagerModal from './CategoryManagerModal.vue'
 
 const props = defineProps<{ editRecord?: Record, lockedGroupId?: string }>()
 const emit = defineEmits<{ close: []; saved: [record: Record] }>()
 
 const authStore = useAuthStore()
 const groupsStore = useGroupsStore()
-const categories = ref<Category[]>([])
+const catStore = useCategoriesStore()
+const { categories } = storeToRefs(catStore)
+
 const scanning = ref(false)
 const submitting = ref(false)
 const error = ref('')
+
+const showCategoryManager = ref(false)
 
 const form = ref({
   title: '',
