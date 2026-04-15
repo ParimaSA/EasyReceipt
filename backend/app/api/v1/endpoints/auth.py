@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db
 from app.middleware.auth import get_current_user
 from app.services.auth_service import AuthService
-from app.schemas.auth import UserRegister, UserLogin, UserBase, Token, TokenRefresh
+from app.schemas.auth import UserRegister, UserLogin, UserBrief, Token, TokenRefresh
 from app.models.models import User
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -28,7 +28,7 @@ async def refresh(data: TokenRefresh, db: AsyncSession = Depends(get_db)):
     return await AuthService(db).refresh(data.refresh_token)
 
 
-@router.get("/me", response_model=UserBase)
+@router.get("/me", response_model=UserBrief)
 async def me(current_user: User = Depends(get_current_user)):
     """Return the authenticated user's profile."""
     return current_user
