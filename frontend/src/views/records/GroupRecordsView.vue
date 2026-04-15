@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-bold">{{ group?.name }}</h1>
+        <h1 class="text-3xl font-bold">{{group?.icon}} {{ group?.name }}</h1>
         <p v-if="group?.description" class="text-sm text-gray-400 mt-0.5">{{ group.description }}</p>
       </div>
       <div class="flex gap-2">
