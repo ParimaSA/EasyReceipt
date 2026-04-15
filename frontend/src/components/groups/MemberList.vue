@@ -25,20 +25,23 @@
         <span :class="['badge', m.role === 'leader' ? 'badge-leader' : m.role === 'member' ? 'badge-member' : 'badge-viewer']">
           {{ m.role }}
         </span>
-        <button
-          v-if="isLeader && m.user_id !== currentUserId"
-          @click="$emit('remove', m.user_id)"
-          class="p-1.5 rounded-lg hover:text-gray-500 transition-all"
-        >
-          <TrashIcon class="w-3.5 h-3.5" />
-        </button>
+
+        <!-- Actions (if Leader) -->
+        <div v-if="isLeader && m.user_id !== currentUserId" class="flex items-center gap-1 text-gray-500">
+          <button @click="$emit('edit', m.user_id)" class="p-1.5 rounded-lg hover:bg-blue-100">
+            <PencilSquareIcon class="w-3.5 h-3.5" />
+          </button>
+          <button @click="$emit('remove', m.user_id)" class="p-1.5 rounded-lg hover:bg-gray-200">
+            <TrashIcon class="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { TrashIcon, LinkIcon } from '@heroicons/vue/24/outline'
+import { TrashIcon, LinkIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
 import type { GroupMember } from '@/types'
 
 defineProps<{
@@ -50,5 +53,6 @@ defineProps<{
 defineEmits<{
   invite: []
   remove: [userId: string]
+  edit: [userId: string]
 }>()
 </script>

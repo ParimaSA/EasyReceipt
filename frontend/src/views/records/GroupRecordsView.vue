@@ -138,6 +138,7 @@ const canRecord = computed(() => {
 })
 
 async function load() {
+  await groupsStore.fetchGroup(id)
   await recordsStore.fetchCategories()
   await recordsStore.fetchGroup(id, {
     skip: skip.value, limit,

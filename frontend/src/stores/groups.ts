@@ -157,9 +157,29 @@ export const useGroupsStore = defineStore('groups', () => {
     }
   }
 
+  async function updateMemberRole(groupId: string, userId: string, new_role: GroupMemberRole) {
+    await groupsApi.updateMemberRole(groupId, userId, new_role)
+  
+    if (currentGroup.value?.id === groupId) {
+      const member = currentGroup.value.members.find(m => m.user_id === userId)
+      if (member) {
+        member.role = new_role
+      }
+    }
+
+    const groupInList = groups.value.find(g => g.id === groupId)
+    if (groupInList) {
+      const memberInList = groupInList.members.find(m => m.user_id === userId)
+      if (memberInList) {
+        memberInList.role = new_role
+      }
+    }
+    
+  }
+
   return {
     groups, currentGroup, invitations, loading,
     mockGroups, mockGroup, fetchGroups, fetchGroup, createGroup, updateGroup, deleteGroup,
-    fetchInvitations, createInvitation, revokeInvitation, joinGroup, removeMember,
+    fetchInvitations, createInvitation, revokeInvitation, joinGroup, removeMember, updateMemberRole
   }
 })

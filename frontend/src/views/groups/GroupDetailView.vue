@@ -17,6 +17,7 @@
       :current-user-id="authStore.user?.id"
       @invite="showInvite = true"
       @remove="removeMember"
+      @edit="handleEditMember"
     />
 
     <InviteList
@@ -31,6 +32,13 @@
       :loading="creatingInvite"
       @close="showInvite = false"
       @submit="createInvite"
+    />
+
+    <MemberRoleModal
+      v-if="showEditModal && selectedUserId && group"
+      :group="group"
+      :target-user-id="selectedUserId"
+      @close="closeEditModal"
     />
 
     <!-- Modals -->
@@ -55,6 +63,7 @@ import MemberList from '@/components/groups/MemberList.vue'
 import InviteList from '@/components/groups/InviteList.vue'
 import InviteModal from '@/components/groups/InviteModal.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
+import MemberRoleModal from '@/components/groups/MemberRoleModal.vue'
 
 const route = useRoute()
 const id = route.params.id as string
@@ -75,6 +84,7 @@ const deletingMemberName = computed(() =>
 )
 
 onMounted(async () => {
+  await groupsStore.fetchGroup(id)
   if (isLeader.value) await groupsStore.fetchInvitations(id)
 })
 
@@ -92,6 +102,19 @@ async function revokeInvitation(invId: string) {
 
 async function removeMember(userId: string) {
   deletingMember.value = userId
+}
+
+const selectedUserId = ref<string | null>(null)
+const showEditModal = ref(false)
+
+function handleEditMember(userId: string) {
+  selectedUserId.value = userId
+  showEditModal.value = true
+}
+
+function closeEditModal() {
+  showEditModal.value = false
+  selectedUserId.value = null
 }
 
 async function doRemove() {

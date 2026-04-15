@@ -9,12 +9,6 @@
 
     <!-- Filters -->
     <div class="card p-4 flex flex-wrap gap-3 items-center">
-      <!-- Group -->
-      <select v-model="filter.group_id" @change="load" class="input w-auto text-sm py-2">
-        <option value="">All Groups</option>
-        <option v-for="g in groups" :key="g.id" :value="g.id">{{ g.name }}</option>
-      </select>
-
       <!-- Category -->
       <select v-model="filter.category_id" @change="load" class="input w-auto text-sm py-2">
         <option value="">All Categories</option>
@@ -120,7 +114,6 @@ const skip = ref(0)
 const limit = 20
 
 const filter = ref({
-  group_id: '',
   category_id: '',
   type: '',
   date_from: '',
@@ -141,7 +134,7 @@ async function load() {
 }
 
 function clearFilters() {
-  filter.value = { group_id: '', category_id: '', type: '', date_from: '', date_to: '' }
+  filter.value = { category_id: '', type: '', date_from: '', date_to: '' }
   skip.value = 0
   load()
 }

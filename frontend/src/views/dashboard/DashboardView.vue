@@ -67,7 +67,6 @@
 import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { ArrowTrendingUpIcon, ArrowTrendingDownIcon, BanknotesIcon, DocumentTextIcon } from '@heroicons/vue/24/outline'
-import { useAuthStore } from '@/stores/auth'
 import { useRecordsStore } from '@/stores/records'
 import StatCard from '@/components/dashboard/StatCard.vue'
 import TrendChart from '@/components/dashboard/TrendChart.vue'
@@ -76,7 +75,6 @@ import RecordRow from '@/components/records/RecordRow.vue'
 import { storeToRefs } from 'pinia'
 import { startOfMonth, startOfQuarter, startOfYear, format } from 'date-fns'
 
-const authStore = useAuthStore()
 const recordsStore = useRecordsStore()
 const { dashboard, loading } = storeToRefs(recordsStore)
 const period = ref<'month' | 'quarter' | 'year' | 'all'>('month')

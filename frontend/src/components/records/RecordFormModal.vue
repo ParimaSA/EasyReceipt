@@ -58,7 +58,10 @@
           </div>
 
           <div v-if="form.type !== 'income'">
-            <label class="label">Category</label>
+            <div class="flex w-full justify-between">
+              <label class="label">Category</label>
+              <button class="label text-[10px] text-gray-500 hover:text-gray-600">Edit Category</button>
+            </div>
             <select v-model="form.category_id" class="input">
               <option value="">— None —</option>
               <option v-for="c in categories" :key="c.id" :value="c.id">
