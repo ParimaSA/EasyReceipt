@@ -56,5 +56,5 @@ async function onCreated(payload: { name: string; icon: string; description: str
   showCreate.value = false
 }
 
-onMounted(() => groupsStore.mockGroups())
+onMounted(() => groupsStore.fetchGroups())
 </script>

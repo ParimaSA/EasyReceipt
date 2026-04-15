@@ -2,7 +2,7 @@
   <div class="p-12 space-y-6 max-w-6xl mx-auto">
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-bold">{{ group?.name }}</h1>
+        <h1 class="text-3xl font-bold">{{group?.icon}} {{ group?.name }}</h1>
         <p v-if="group?.description" class="text-sm text-gray-400 mt-0.5">{{ group.description }}</p>
       </div>
       <div class="flex gap-2">
@@ -54,14 +54,14 @@ const { currentGroup: group } = storeToRefs(groupsStore)
 
 async function loadData(groupId: string) {
   await Promise.all([
-    recordsStore.mockRecords(),
-    groupsStore.mockGroup(groupId),
+    recordsStore.fetchGroupDashboard(groupId),
+    groupsStore.fetchGroup(groupId),
   ])
 }
 
 onMounted(() => loadData(id))
 
 watch(() => route.params.id, (newId) => {
-  if (newId) loadData(newId as string)  // ← call it directly, pass newId
+  if (newId) loadData(newId as string)
 })
 </script>

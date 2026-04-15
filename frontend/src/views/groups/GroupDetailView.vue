@@ -75,7 +75,6 @@ const deletingMemberName = computed(() =>
 )
 
 onMounted(async () => {
-  groupsStore.mockGroup(id)
   if (isLeader.value) await groupsStore.fetchInvitations(id)
 })
 

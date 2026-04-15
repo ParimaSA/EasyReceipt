@@ -133,7 +133,7 @@ const groupRole = computed(() => {
 })
 
 onMounted(() => {
-  groupsStore.mockGroups()
+  groupsStore.fetchGroups()
 })
 </script>
 

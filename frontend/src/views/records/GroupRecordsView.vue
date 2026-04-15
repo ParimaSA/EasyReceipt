@@ -28,7 +28,7 @@
       </select>
       <select v-model="filter.category_id" @change="load" class="input w-auto text-sm py-2">
         <option value="">All Categories</option>
-        <option v-for="c in mockCategories" :key="c.id" :value="c.id">
+        <option v-for="c in categories" :key="c.id" :value="c.id">
           {{ c.icon }} {{ c.name }}
         </option>
       </select>
@@ -116,7 +116,7 @@ const recordsStore = useRecordsStore()
 const groupsStore = useGroupsStore()
 const authStore = useAuthStore()
 
-const { records, total, loading } = storeToRefs(recordsStore)
+const { records, total, categories, loading } = storeToRefs(recordsStore)
 const { currentGroup: group } = storeToRefs(groupsStore)
 
 const showForm = ref(false)
@@ -132,23 +132,13 @@ const filter = ref({
   date_to: '',
 })
 
-const mockCategories = [
-  { id: 'cat-1', name: 'Salary',        icon: '💰' },
-  { id: 'cat-2', name: 'Housing',       icon: '🏠' },
-  { id: 'cat-3', name: 'Food',          icon: '🍔' },
-  { id: 'cat-4', name: 'Freelance',     icon: '💻' },
-  { id: 'cat-5', name: 'Utilities',     icon: '⚡' },
-  { id: 'cat-6', name: 'Entertainment', icon: '🎬' },
-  { id: 'cat-7', name: 'Investment',    icon: '📈' },
-  { id: 'cat-8', name: 'Transport',     icon: '🚕' },
-]
-
 const canRecord = computed(() => {
   const me = group.value?.members.find(m => m.user_id === authStore.user?.id)
   return me && me.role !== 'viewer'
 })
 
 async function load() {
+  await recordsStore.fetchCategories()
   await recordsStore.fetchGroup(id, {
     skip: skip.value, limit,
     type: filter.value.type as any || undefined,
@@ -179,7 +169,6 @@ async function doDelete() {
 }
 
 onMounted(async () => {
-  groupsStore.mockGroup(id)
   await load()
 })
 </script>

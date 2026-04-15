@@ -81,8 +81,6 @@ const recordsStore = useRecordsStore()
 const { dashboard, loading } = storeToRefs(recordsStore)
 const period = ref<'month' | 'quarter' | 'year' | 'all'>('month')
 
-recordsStore.mockRecords()
-
 function getDateRange() {
   const now = new Date()
   const map = {
