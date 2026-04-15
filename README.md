@@ -66,6 +66,13 @@ Views  →  Stores (Pinia)  →  API modules  →  Axios client  →  Backend
 | `viewer` | A read-only role intended for stakeholders who need to monitor the financial data without the ability to modify it. |
 
 ### Role Permission
+The following table outlines the specific capabilities assigned to each role within a group:
+
+| Role | View Records | Add/Edit Records | Invite Members | Remove Members |
+| :--- | :---: | :---: | :---: | :---: |
+| **Leader** | ✔ | ✔ | ✔ | ✔ |
+| **Member** | ✔ | ✔ | ✗ | ✗ |
+| **Viewer** | ✔ | ✗ | ✗ | ✗ |
 
 ---
 
