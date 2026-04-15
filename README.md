@@ -1,7 +1,5 @@
 # EasyReceipt 🧾
-
-A full-stack income & expense management application with personal and group accounts, receipt scanning, dashboards, and role-based access control.
-
+An income & expense management application with personal and group accounts, receipt scanning, dashboards, and role-based access control.
 
 ---
 
