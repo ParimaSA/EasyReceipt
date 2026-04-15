@@ -45,6 +45,7 @@ class GroupRepository:
             id=str(uuid.uuid4()),
             name=data.name,
             description=data.description,
+            icon=data.icon,
             leader_id=leader_id,
         )
         self._db.add(group)

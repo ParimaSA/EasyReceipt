@@ -8,11 +8,13 @@ from .auth import UserBrief
 class GroupCreate(BaseModel):
     name: str = Field(..., min_length=1, max_length=200)
     description: Optional[str] = None
+    icon: Optional[str] = None
 
 class GroupUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=1, max_length=200)
     description: Optional[str] = None
-
+    icon: Optional[str] = None
+    
 class GroupMemberResponse(BaseModel):
     id: str
     user_id: str
@@ -27,6 +29,7 @@ class GroupResponse(BaseModel):
     id: str
     name: str
     description: Optional[str] = None
+    icon: Optional[str] = None
     leader_id: str
     is_active: bool
     created_at: datetime
