@@ -16,6 +16,8 @@
         v-for="g in groups" :key="g.id"
         :group="g"
         :my-role="myRole(g)"
+        @edit="onEditGroup"
+        @delete="onDeleteGroup"
       />
     </div>
 
@@ -30,6 +32,21 @@
     @close="showCreate = false"
     @created="onCreated"
   />
+
+  <EditGroupModal
+    v-if="editingGroup"
+    :group="editingGroup"
+    @close="editingGroup = null"
+    @updated="onUpdated"
+  />
+
+  <ConfirmDialog
+    v-if="deletingGroup"
+    title="Delete Group"
+    :message="`Delete group &quot;${deletingGroup.name}&quot;? This cannot be undone.`"
+    @confirm="confirmDelete"
+    @cancel="deletingGroup = null"
+  />
 </template>
 
 <script setup lang="ts">
@@ -41,11 +58,17 @@ import { storeToRefs } from 'pinia'
 import type { Group } from '@/types'
 import GroupCard from '@/components/groups/GroupCard.vue'
 import CreateGroupModal from '@/components/groups/CreateGroupModal.vue'
+import EditGroupModal from '@/components/groups/EditGroupModal.vue'
+import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 
 const groupsStore = useGroupsStore()
 const authStore = useAuthStore()
 const { groups, loading } = storeToRefs(groupsStore)
+
 const showCreate = ref(false)
+const editingGroup = ref<Group | null>(null)
+const deletingGroup = ref<Group | null>(null)
+const deleteLoading = ref(false)
 
 function myRole(g: Group) {
   return g.members.find(m => m.user_id === authStore.user?.id)?.role ?? 'viewer'
@@ -54,6 +77,30 @@ function myRole(g: Group) {
 async function onCreated(payload: { name: string; icon: string; description: string }) {
   await groupsStore.createGroup(payload)
   showCreate.value = false
+}
+
+function onEditGroup(group: Group) {
+  editingGroup.value = group
+}
+
+async function onUpdated(payload: { id: string; name: string; icon: string; description: string }) {
+  await groupsStore.updateGroup(editingGroup.value!.id, payload)
+  editingGroup.value = null
+}
+
+function onDeleteGroup(group: Group) {
+  deletingGroup.value = group
+}
+
+async function confirmDelete() {
+  if (!deletingGroup.value) return
+  deleteLoading.value = true
+  try {
+    await groupsStore.deleteGroup(deletingGroup.value.id)
+    deletingGroup.value = null
+  } finally {
+    deleteLoading.value = false
+  }
 }
 
 onMounted(() => groupsStore.fetchGroups())

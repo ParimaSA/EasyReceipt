@@ -112,7 +112,7 @@ export const useGroupsStore = defineStore('groups', () => {
     return data
   }
 
-  async function updateGroup(id: string, payload: { name?: string; description?: string }) {
+  async function updateGroup(id: string, payload: { name?: string; description?: string; icon?: string }) {
     const { data } = await groupsApi.update(id, payload)
     const idx = groups.value.findIndex(g => g.id === id)
     if (idx !== -1) groups.value[idx] = data
